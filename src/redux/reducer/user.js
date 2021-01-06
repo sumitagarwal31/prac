@@ -9,7 +9,7 @@ export const loginAction = createAsyncThunk('user/loginAction', async (param, { 
 
 const initialState = {
   credential: { userName: 'hruday@gmail.com', password: 'hruday123' },
-  user: []
+  user: [],
 }
 
 const usersSlice = createSlice({
