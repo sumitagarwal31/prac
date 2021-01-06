@@ -6,13 +6,15 @@ import {
     SafeAreaView,
     StatusBar
 } from "react-native";
-import { useDispatch } from 'react-redux';
-import { login } from '../redux/actions';
+import { useDispatch } from 'react-redux'
+import { loginAction } from '../redux/reducer/user'
 import CommonButton from "../components/CommonButton";
 import CommonTextInput from "../components/CommonTextInput";
+import { unwrapResult } from '@reduxjs/toolkit'
 
 
 const LoginScreen = ({ navigation }) => {
+    const dispatch = useDispatch()
     const [username, _username] = useState('');
     const [password, _password] = useState('');
     const [usernameError, _usernameError] = useState('');
@@ -22,8 +24,11 @@ const LoginScreen = ({ navigation }) => {
         username == '' ? _usernameError('*Please Enter the Username') : _usernameError('');
         password == '' ? _passwordError('*Please Enter the Password') : _passwordError('');
         if (username && password) {
-            // navigation.navigate('DashboardScreen')
-            useDispatch(login({ 'username': username, 'password': password }))
+            dispatch(loginAction({ username, password })).then(unwrapResult).then(res => {
+                navigation.navigate('DashboardScreen')
+            }).catch(err => {
+                _passwordError(err.message);
+            })
         }
     }
 
